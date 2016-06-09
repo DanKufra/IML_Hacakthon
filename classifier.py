@@ -23,7 +23,6 @@ POLITICIAN = 3
 
 class Classifier(object):
     first_dic = {}
-    best_dic = {}
     first_SVC = None
     def __init__(self):
         pass
@@ -66,6 +65,9 @@ class Classifier(object):
 
         #deletes from the dictionary all prepostions
         my_dict = {k:v for k,v in my_dict.items() if k not in get_Prepostion_List}
+
+        print(my_dict)
+
         index = 0
         for k in my_dict:
             my_dict[k] = (my_dict[k], index)
