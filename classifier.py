@@ -89,3 +89,6 @@ validation_instances = X[0.7*len(X):]
 training_labels = y[0:0.7*len(y)]
 validation_labels = y[0.7*len(y):]
 SVC = svm.SVC()
+X,y = load_dataset()
+names = np.loadtxt("names.txt", delimiter=',')
+print(X[0], names[y[0]])
