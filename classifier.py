@@ -19,7 +19,8 @@ import numpy as np
 LOW_APPEARANCE = 3
 
 class Classifier(object):
-
+    first_dic = {}
+    first_SVC = None
     def __init__(self):
         pass
 
@@ -31,10 +32,11 @@ class Classifier(object):
         """
         # TODO implement
 
-    def general_train(self, instances, labels):
-        pass
+    def general_train(self, training_instances, training_labels):
+        self.first_dic = self.get_dict(training_instances)
+        X1,y1 = self.create_tweet_matrix(training_instances, training_labels)
 
-    def word_count(self, tweets, name):
+    def get_dict(self, tweets):
         """
         Recieves a list of tweets for a person
         :param tweets: A list of strings, that represents a tweet
@@ -80,15 +82,19 @@ class Classifier(object):
         """
 
     def train_politics(self,instances, labels):
-        pass
+        X,y = self.create_tweet_matrix(instances,labels)
+        SVC = svm.SVC()
+        SVC.fit(X, y)
+
 
     def predict_politics(self, tweet, SVC):
-        pass
+        return SVC.predict(self.get_tweet_vec(tweet, self.first_dic))
+
+    def test_training(self, test_instances, test_labels, SVC):
+        X2, y2 = self.create_tweet_matrix(test_instances, test_labels)
+        return ((1.0 for i in range(len(test_instances)) if self.predict_politics(X2[i], SVC) != y2[i]) / len(test_instances))
 
 
-
-
-SVC = svm.SVC()
 X,y = load_dataset()
 names = pandas.read_csv("names.txt", header=None)
 namesIndex, names = names[0], names[1]
