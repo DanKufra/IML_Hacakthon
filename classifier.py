@@ -92,4 +92,3 @@ SVC = svm.SVC()
 X,y = load_dataset()
 names = pandas.read_csv("names.txt", header=None)
 namesIndex, names = names[0], names[1]
-print(X[0], names[y[0]])
