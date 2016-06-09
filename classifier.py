@@ -28,7 +28,6 @@ class Classifier(object):
         :return: y_hat - a vector of length m that contains integers between 0 - 9
         """
 
-    raise NotImplementedError("TODO: Implement this method by 12pm tomorrow!")
 
     def word_count(self, tweets, name):
         """
@@ -51,13 +50,14 @@ class Classifier(object):
         # remove the words that appears the less
         my_dict = {k:v for k,v in my_dict.items() if v > LOW_APPEARANCE}
 
-        count = 0
+        index = 0
         for k in my_dict:
-            my_dict[k] = (my_dict[k], count)
-            count += 1
+            my_dict[k] = (my_dict[k], index)
+            index += 1
         return my_dict
 
     def get_tweet_vec(self, tweet, word_dic):
+        # given a tweet and a word_dic it creates a vector of 0's and 1's
         tweet_vec = np.zeros(len(word_dic))
         for word in tweet:
             temp = word_dic.get(word)
@@ -65,3 +65,5 @@ class Classifier(object):
                 index = temp[1]
                 tweet_vec[index] = 1
         return tweet_vec
+
+X,y = load_dataset("/cs/hackathon/dan_kufra/venv/IML_Hacakthon/tweets.csv")
