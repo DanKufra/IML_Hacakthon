@@ -28,20 +28,21 @@ def get_common_words(X, y, labels, promise):
         all_tweets_list[index] += " " + tweet
         all_tweets += " " + tweet
 
-    list_per_person = []
+
+    list_per_group = []
 
     for label in range(len(labels)):
         counter = Counter(all_tweets_list[label].split()).most_common()
-        list_per_person.append(counter)
+        list_per_group.append(counter)
 
     # #get a list of all the Prepostion in the english language
     # get_Prepostion_List = [line.rstrip('\n') for line in open('PrepositionsList')]
 
     # list of dictionaries for every person with word as key and amount in tweets as value
-    dictionary_per_person = [{k: v for k, v in list_per_person[i]}
-                                            for i in range(len(list_per_person))]
+    dictionary_per_person = [{k: v for k, v in list_per_group[i]}
+                                            for i in range(len(list_per_group))]
 
-    check = open('check.txt', 'w')
+    # check = open('check.txt', 'w')
 
     # count all the words in all the tweets
     counter = Counter(all_tweets.split()).most_common()
@@ -57,7 +58,7 @@ def get_common_words(X, y, labels, promise):
                 to_write.append(0)
         if any(to_write[i] >= promise and dictionary_per_person[i][word] > MAX
                for i in range(len(dictionary_per_person))):
-            check.write(word + to_write.__str__() + "\n")
+            # check.write(word + to_write.__str__() + "\n")
             all_counter.append((word, to_write))
 
     return all_counter
