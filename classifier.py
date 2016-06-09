@@ -27,7 +27,7 @@ class Classifier(object):
         :param X: A list of length m containing the tweet's texts (strings)
         :return: y_hat - a vector of length m that contains integers between 0 - 9
         """
-
+        # TODO implement
 
     def word_count(self, tweets, name):
         """
