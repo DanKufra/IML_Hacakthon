@@ -66,4 +66,5 @@ class Classifier(object):
                 tweet_vec[index] = 1
         return tweet_vec
 
+
 X,y = load_dataset("/cs/hackathon/dan_kufra/venv/IML_Hacakthon/tweets.csv")
