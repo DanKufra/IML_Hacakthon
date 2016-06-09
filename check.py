@@ -1,5 +1,6 @@
 __author__ = 'gilax'
 
+MAX = 4
 from load_tweets import *
 from collections import Counter
 import numpy as np
@@ -18,10 +19,10 @@ for label in range(10):
     counter = Counter(all_tweets_list[label].split()).most_common()
     my_dict.append(counter)
 
-#get a list of all the Prepostion in the english language
-get_Prepostion_List = [line.rstrip('\n') for line in open('PrepositionsList')]
+# #get a list of all the Prepostion in the english language
+# get_Prepostion_List = [line.rstrip('\n') for line in open('PrepositionsList')]
 
-my_dict = [{k:v for k,v in my_dict[i] } for i in range(len(my_dict))]
+my_dict = [{k:v for k,v in my_dict[i] if v > MAX} for i in range(len(my_dict))]
 
 check = open('check.txt', 'w')
 
@@ -36,15 +37,19 @@ all_counter = []
 # print(counter)
 
 for word in counter:
-    to_write = []
-    for i in range(10):
-        if word[0] in my_dict[i].keys():
-            percent = round(my_dict[i][word[0]] / word[1] * 100, 2)
-            to_write.append(percent)
-        else:
-            to_write.append(0)
-    check.write(word[0] + to_write.__str__() + "\n")
+    if word[1] > MAX:
+        to_write = []
+        for i in range(10):
+            if word[0] in my_dict[i].keys():
+                # percent = round(my_dict[i][word[0]] / word[1] * 100, 2)
+                percent = my_dict[i][word[0]]
+                to_write.append(percent)
+            else:
+                to_write.append(0)
+        check.write(word[0] + to_write.__str__() + "\n")
+        all_counter.append((word[0], to_write))
     # check.write(names[i] + "\n")
     # for string in my_dict[i]:
     #     check.write(string.__str__() + "\n")
     # check.write("\n\n")
+
