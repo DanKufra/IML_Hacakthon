@@ -17,7 +17,7 @@ import numpy as np
 from collections import Counter
 
 
-LOW_APPEARANCE = 3
+LOW_APPEARANCE = 5
 POLITICIAN = 3
 
 
@@ -64,7 +64,6 @@ class Classifier(object):
         #deletes from the dictionary all prepostions
         my_dict = {k:v for k,v in my_dict.items() if k not in get_Prepostion_List}
 
-        print(my_dict)
 
         index = 0
         for k in my_dict:
