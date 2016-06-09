@@ -17,6 +17,8 @@ import numpy as np
 
 
 LOW_APPEARANCE = 3
+POLITICIAN = 3
+
 
 class Classifier(object):
     first_dic = {}
@@ -64,22 +66,27 @@ class Classifier(object):
         return my_dict
 
     def get_tweet_vec(self, tweet, word_dic):
-        # given a tweet and a word_dic it creates a vector of 0's and 1's
+        # given a tweet and a word_dic it creates a vector with the number of
+        # appearance of a word in the tweet
         tweet_vec = np.zeros(len(word_dic))
         for word in tweet:
             temp = word_dic.get(word)
             if temp is not None:
                 index = temp[1]
-                tweet_vec[index] = 1
+                tweet_vec[index] += 1
         return tweet_vec
 
     def create_tweet_matrix(self, instances, labels):
         """
         create matrix of tweets and a vector of their labels
-        :param instances: al the tweets in a list of strings
+        :param instances: all the tweets in a list of vectors
         :param labels:
         :return:topple of a matrix for all the tweets and their label
         """
+        matrix = np.array([self.get_tweet_vec(tweet, word_dic) for tweet in instances])
+        binary_lables = np.array([1 if label <= POLITICIAN else 0 for label in
+                                 labels])
+        return matrix, binary_lables
 
     def train_politics(self,instances, labels):
         X,y = self.create_tweet_matrix(instances,labels)
