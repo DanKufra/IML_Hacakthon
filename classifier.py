@@ -59,6 +59,10 @@ class Classifier(object):
         # remove the words that appears the less
         my_dict = {k:v for k,v in my_dict.items() if v > LOW_APPEARANCE}
 
+        get_Prepostion_List = [line.rstrip('\n') for line in open('PrepostionList')]
+
+
+
         index = 0
         for k in my_dict:
             my_dict[k] = (my_dict[k], index)
