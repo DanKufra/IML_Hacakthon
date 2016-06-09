@@ -38,10 +38,11 @@ class Classifier(object):
         """
         # TODO implement
 
-    def train(self,training_instances, training_labels,validate_instances, validate_labels):
+    def train(self,training_instances, training_labels, validate_instances, validate_labels):
         SVC = svm.LinearSVC()
-        vectorizer = TfidfVectorizer(min_df=3, ngram_range=(1,5))
+        vectorizer = TfidfVectorizer(min_df=2, ngram_range=(1,4))
         X_train = vectorizer.fit_transform(training_instances)
+
         X_train2 = vectorizer.transform(validate_instances)
 
         binary_labels = np.array([1 if label <= POLITICIAN else -1 for label in
