@@ -130,6 +130,7 @@ training_label = y[0:(int) (0.4*len(X))]
 val_label = y[(int) (0.4*len(X)):(int) (0.6*len(X)):]
 
 classifier = Classifier()
-classifier.general_train(training_data, training_label)
+#classifier.general_train(training_data, training_label)
 
-print (classifier.test_training(val_data, val_label , classifier.first_SVC))
+#print (classifier.test_training(val_data, val_label , classifier.first_SVC))
+
