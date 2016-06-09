@@ -10,8 +10,13 @@ Auther(s): Tomer Patel, Dan Kufra, Gilad Wolf
 ===================================================
 """
 from load_tweets import load_dataset
+import operator
+import numpy as np
 
 class Classifier(object):
+
+    def __init__(self):
+        pass
 
     def classify(self,X):
         """
@@ -28,5 +33,19 @@ class Classifier(object):
         :param tweets: A list of strings, that represents a tweet
         :param name: The person who wrote all of those tweets
         :return: dictionary, vector - A dictionary of words that appear in a
-        tweet, and a vector of word count for those words
+        tweet and how many times it appear in all the tweets
         """
+        my_dict = {}
+        # count all the words in all the tweets
+        for tweet in tweets:
+            tweet = tweet.lower().split()
+            for word in tweet:
+                if word in my_dict:
+                    my_dict[word] += 1
+                else:
+                    my_dict[word] = 1
+
+        # remove the words that appears the less
+        min_val = min(my_dict.values())
+        remaining = my_dict.keys() - (k for k, v in my_dict.iteritems() if v == min_val)
+        return my_dict
