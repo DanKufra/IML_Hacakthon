@@ -49,5 +49,20 @@ class Classifier(object):
                     my_dict[word] = 1
 
         # remove the words that appears the less
-        my_dict = {k:v for k,v in my_dict.items() if v > LOW_APPEARANCE}
+        remaining = my_dict.keys() - (k for k, v in my_dict.iteritems()
+                                      if v < LOW_APPEARANCE)
+        count = 0
+        for k in my_dict:
+            my_dict[k] = (my_dict[k], count)
+            count += 1
+        return remaining
+
+    def get_tweet_vec(self, tweet, word_dic):
+        tweet_vec = np.zeros(len(word_dic))
+        for word in tweet:
+            temp = word_dic.get(word)
+            if temp is not None:
+                index = temp[1]
+                tweet_vec[index] = 1
+        return tweet_vec        my_dict = {k:v for k,v in my_dict.items() if v > LOW_APPEARANCE}
         return my_dict
