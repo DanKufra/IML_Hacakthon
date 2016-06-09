@@ -5,7 +5,7 @@
 
             **  Tweets Classifier  **
 
-Auther(s):
+Auther(s): Tomer Patel, Dan Kufra, Gilad Wolf
 
 ===================================================
 """
@@ -18,4 +18,5 @@ class Classifier(object):
         :param X: A list of length m containing the tweet's texts (strings)
         :return: y_hat - a vector of length m that contains integers between 0 - 9
         """
+
     raise NotImplementedError("TODO: Implement this method by 12pm tomorrow!")
