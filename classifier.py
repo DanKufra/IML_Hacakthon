@@ -57,6 +57,9 @@ class Classifier(object):
         counter = Counter(all_tweets.split()).most_common()
         my_dict = dict(counter)
 
+        # remove the words that appears the less
+        my_dict = {k:v for k,v in my_dict.items() if v > LOW_APPEARANCE}
+
         #get a list of all the Prepostion in the english language
         get_Prepostion_List = [line.rstrip('\n') for line in open('PrepositionsList')]
 
@@ -90,7 +93,14 @@ class Classifier(object):
         :return:topple of a matrix for all the tweets and a label 1 if politician, else -1
         """
         print(" In create_tweet_matrix")
-
+        '''
+        The support vector machines in scikit-learn support both dense
+        (numpy.ndarray and convertible to that by numpy.asarray)
+        and sparse (any scipy.sparse) sample vectors as input.
+        However, to use an SVM to make predictions for sparse data,
+        it must have been fit on such data. For optimal performance, use C-ordered numpy.ndarray (dense) or
+        scipy.sparse.csr_matrix (sparse) with dtype=float64.
+        '''
         matrix = np.array([self.get_tweet_vec(tweet, self.first_dic) for tweet in instances])
         binary_labels = np.array([1 if label <= POLITICIAN else -1 for label in
                                  labels])
@@ -110,11 +120,7 @@ class Classifier(object):
 
     def test_training(self, test_instances, test_labels, SVC):
         X2, y2 = self.create_tweet_matrix(test_instances, test_labels)
-        count = 0
-        for i in range(len(test_instances)):
-            if self.predict_politics(X2[i],SVC) != y2[i]:
-                count += 1.0
-        return count / len(X2)
+        return 1 - SVC.score(X2,y2)
 
         #return sum(1.0 for i in range(len(test_instances)) if self.predict_politics(X2[i], SVC) != y2[i]) / len(test_instances)
 
@@ -123,14 +129,13 @@ X,y = load_dataset()
 names = pandas.read_csv("names.txt", header=None)
 namesIndex, names = names[0], names[1]
 
-training_data = X[0:(int) (0.4*len(X))]
-val_data = X[(int) (0.4*len(X)):(int) (0.6*len(X)):]
+training_data = X[0:(int) (0.2*len(X))]
+val_data = X[(int) (0.2*len(X)):(int) (0.4*len(X)):]
 
-training_label = y[0:(int) (0.4*len(X))]
-val_label = y[(int) (0.4*len(X)):(int) (0.6*len(X)):]
+training_label = y[0:(int) (0.2*len(X))]
+val_label = y[(int) (0.2*len(X)):(int) (0.4*len(X)):]
 
 classifier = Classifier()
-#classifier.general_train(training_data, training_label)
+classifier.general_train(training_data, training_label)
 
-#print (classifier.test_training(val_data, val_label , classifier.first_SVC))
-
+print (classifier.test_training(val_data, val_label , classifier.first_SVC))
