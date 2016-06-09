@@ -17,12 +17,13 @@ import numpy as np
 from collections import Counter
 
 
-LOW_APPEARANCE = 3
+LOW_APPEARANCE = 100
 POLITICIAN = 3
 
 
 class Classifier(object):
     first_dic = {}
+    best_dic = {}
     first_SVC = None
     def __init__(self):
         pass
@@ -36,8 +37,10 @@ class Classifier(object):
         # TODO implement
 
     def general_train(self, training_instances, training_labels):
+        # gets the training data and labels and creates the dictionary of words, this differentiates between politics and non-politics
         self.first_dic = self.get_dict(training_instances)
-        X1,y1 = self.create_tweet_matrix(training_instances, training_labels)
+        # create a matrix representing the tweets
+        self.first_SVC = self.train_politics(training_instances, training_labels)
 
     def get_dict(self, tweets):
         """
@@ -63,9 +66,6 @@ class Classifier(object):
 
         #deletes from the dictionary all prepostions
         my_dict = {k:v for k,v in my_dict.items() if k not in get_Prepostion_List}
-
-        print(my_dict)
-
         index = 0
         for k in my_dict:
             my_dict[k] = (my_dict[k], index)
@@ -90,26 +90,47 @@ class Classifier(object):
         :param labels: the labels of the tweeters
         :return:topple of a matrix for all the tweets and a label 1 if politician, else -1
         """
+        print(" In create_tweet_matrix")
+
         matrix = np.array([self.get_tweet_vec(tweet, self.first_dic) for tweet in instances])
         binary_labels = np.array([1 if label <= POLITICIAN else -1 for label in
                                  labels])
         return matrix, binary_labels
 
     def train_politics(self,instances, labels):
+        print(" In train_politics")
         X,y = self.create_tweet_matrix(instances,labels)
         SVC = svm.SVC()
         SVC.fit(X, y)
+        print(" finished training")
+        return SVC
+
 
     def predict_politics(self, tweet, SVC):
-        return SVC.predict(self.get_tweet_vec(tweet, self.first_dic))
+        return SVC.predict(tweet.reshape(1, -1))
 
     def test_training(self, test_instances, test_labels, SVC):
         X2, y2 = self.create_tweet_matrix(test_instances, test_labels)
-        return ((1.0 for i in range(len(test_instances)) if self.predict_politics(X2[i], SVC) != y2[i]) / len(test_instances))
+        count = 0
+        for i in range(len(test_instances)):
+            if self.predict_politics(X2[i],SVC) != y2[i]:
+                count += 1.0
+        return count / len(X2)
+
+        #return sum(1.0 for i in range(len(test_instances)) if self.predict_politics(X2[i], SVC) != y2[i]) / len(test_instances)
 
 
 X,y = load_dataset()
 names = pandas.read_csv("names.txt", header=None)
 namesIndex, names = names[0], names[1]
+
+training_data = X[0:(int) (0.4*len(X))]
+val_data = X[(int) (0.4*len(X)):(int) (0.6*len(X)):]
+
+training_label = y[0:(int) (0.4*len(X))]
+val_label = y[(int) (0.4*len(X)):(int) (0.6*len(X)):]
+
 classifier = Classifier()
-classifier.general_train(X,y)
+classifier.general_train(training_data, training_label)
+
+print (classifier.test_training(val_data, val_label , classifier.first_SVC))
