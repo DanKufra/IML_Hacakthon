@@ -1,0 +1,10 @@
+0,Donald Trump
+1,Hillary Clinton
+2,Barack Obama
+3,Bernie Sanders
+4,Taylor Swift
+5,Oprah Winfrey
+6,Lance Armstrong
+7,Cher
+8,Shaquille O’Neal
+9,Khloe Kardashian
