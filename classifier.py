@@ -51,4 +51,5 @@ class Classifier(object):
         # remove the words that appears the less
         remaining = my_dict.keys() - (k for k, v in my_dict.iteritems()
                                       if v < LOW_APPEARANCE)
-        return my_dict
+
+        return remaining
