@@ -68,4 +68,6 @@ class Classifier(object):
         return tweet_vec
 
 
-X,y = load_dataset("/cs/hackathon/dan_kufra/venv/IML_Hacakthon/tweets.csv")
+X,y = load_dataset()
+names = np.loadtxt("names.txt", delimiter=',')
+print(X[0], names[y[0]])
