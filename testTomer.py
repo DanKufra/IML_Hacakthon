@@ -63,7 +63,7 @@ namesIndex, names = names[0], names[1]
 
 for k in range(10):
     for j in range(10):
-        if k == j : continue
+        if k <= j : continue
         Xbetter = []; ybetter = []
         for i in range(len(y)):
             if y[i]== k or y[i] == j: #trump or clinton

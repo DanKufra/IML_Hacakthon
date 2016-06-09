@@ -63,11 +63,11 @@ namesIndex, names = names[0], names[1]
 
 for i in range(10):
     for j in range(10):
-        if i == j : continue
+        if i <= j : continue
         for k in range(10):
-            if i == j or i == k or j == k: continue
+            if i <= j or i == k or j == k: continue
             for l in range(10):
-                if i == j or i == k or j == k or l==i or l==j or l==k: continue
+                if i == j or i == k or j == k or l==i or l==j or k<=l: continue
 
                 Xbetter = []; ybetter = []
                 for q in range(len(y)):
