@@ -59,12 +59,12 @@ class Classifier(object):
         my_dict = {k:v for k,v in my_dict.items() if v > LOW_APPEARANCE}
 
         #get a list of all the Prepostion in the english language
-        get_Prepostion_List = [line.rstrip('\n') for line in open('PrepostionList')]
+        get_Prepostion_List = [line.rstrip('\n') for line in open('PrepositionsList')]
 
         #deletes from the dictionary all prepostions
-        for k, v in my_dict.iteritems():
-            if get_Prepostion_List.__contains__(k):
-                del my_dict[k]
+        my_dict = {k:v for k,v in my_dict.items() if k not in get_Prepostion_List}
+
+        print(my_dict)
 
         index = 0
         for k in my_dict:
@@ -100,7 +100,6 @@ class Classifier(object):
         SVC = svm.SVC()
         SVC.fit(X, y)
 
-
     def predict_politics(self, tweet, SVC):
         return SVC.predict(self.get_tweet_vec(tweet, self.first_dic))
 
@@ -112,3 +111,5 @@ class Classifier(object):
 X,y = load_dataset()
 names = pandas.read_csv("names.txt", header=None)
 namesIndex, names = names[0], names[1]
+classifier = Classifier()
+classifier.general_train(X,y)
