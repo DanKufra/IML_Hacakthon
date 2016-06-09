@@ -49,7 +49,5 @@ class Classifier(object):
                     my_dict[word] = 1
 
         # remove the words that appears the less
-        remaining = my_dict.keys() - (k for k, v in my_dict.iteritems()
-                                      if v < LOW_APPEARANCE)
-
-        return remaining
+        my_dict = {k:v for k,v in my_dict.items() if v > LOW_APPEARANCE}
+        return my_dict
