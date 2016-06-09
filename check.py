@@ -67,4 +67,4 @@ tweets, names = load_dataset()
 
 politician_labels = [[i for i in range(4)], [i + 4 for i in range(6)]]
 
-print(len(get_common_words(tweets, names, politician_labels, 95)))
+print(len(get_common_words(tweets, names, politician_labels, 90)))
