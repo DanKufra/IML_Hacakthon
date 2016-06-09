@@ -11,7 +11,7 @@ Auther(s): Tomer Patel, Dan Kufra, Gilad Wolf
 """
 from load_tweets import load_dataset
 import operator
-from sklearn.svm.classes import LinearSVC
+from sklearn import svm
 import numpy as np
 
 
@@ -29,6 +29,9 @@ class Classifier(object):
         :return: y_hat - a vector of length m that contains integers between 0 - 9
         """
         # TODO implement
+
+    def general_train(self, instances, labels):
+        pass
 
     def word_count(self, tweets, name):
         """
@@ -67,5 +70,22 @@ class Classifier(object):
                 tweet_vec[index] = 1
         return tweet_vec
 
+    def create_tweet_matrix(self, instances, labels):
+        pass
+
+
+    def train_politics(self,instances, labels):
+        pass
+
+    def predict_politics(self, tweet, SVC):
+        pass
+
+
+
 
 X,y = load_dataset("/cs/hackathon/dan_kufra/venv/IML_Hacakthon/tweets.csv")
+training_instances = X[0:0.7*len(X)]
+validation_instances = X[0.7*len(X):]
+training_labels = y[0:0.7*len(y)]
+validation_labels = y[0.7*len(y):]
+SVC = svm.SVC()
