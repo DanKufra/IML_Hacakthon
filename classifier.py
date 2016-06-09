@@ -13,6 +13,9 @@ from load_tweets import load_dataset
 import operator
 import numpy as np
 
+
+LOW_APPEARANCE = 3
+
 class Classifier(object):
 
     def __init__(self):
@@ -46,6 +49,6 @@ class Classifier(object):
                     my_dict[word] = 1
 
         # remove the words that appears the less
-        min_val = min(my_dict.values())
-        remaining = my_dict.keys() - (k for k, v in my_dict.iteritems() if v == min_val)
+        remaining = my_dict.keys() - (k for k, v in my_dict.iteritems()
+                                      if v < LOW_APPEARANCE)
         return my_dict
