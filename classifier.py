@@ -11,6 +11,7 @@ Auther(s): Tomer Patel, Dan Kufra, Gilad Wolf
 """
 from load_tweets import load_dataset
 import operator
+from sklearn.svm.classes import LinearSVC
 import numpy as np
 
 
