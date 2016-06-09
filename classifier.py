@@ -83,7 +83,7 @@ class Classifier(object):
         :param labels:
         :return:topple of a matrix for all the tweets and their label
         """
-        matrix = np.array([self.get_tweet_vec(tweet, word_dic) for tweet in instances])
+        matrix = np.array([self.get_tweet_vec(tweet, self.first_dic) for tweet in instances])
         binary_lables = np.array([1 if label <= POLITICIAN else 0 for label in
                                  labels])
         return matrix, binary_lables
