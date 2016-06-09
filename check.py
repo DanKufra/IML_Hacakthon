@@ -39,7 +39,8 @@ for word in counter:
     to_write = []
     for i in range(10):
         if word[0] in my_dict[i].keys():
-            to_write.append(my_dict[i][word[0]])
+            percent = round(my_dict[i][word[0]] / word[1] * 100, 2)
+            to_write.append(percent)
         else:
             to_write.append(0)
     check.write(word[0] + to_write.__str__() + "\n")
