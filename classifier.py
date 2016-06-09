@@ -80,11 +80,11 @@ class Classifier(object):
         """
         create matrix of tweets and a vector of their labels
         :param instances: all the tweets in a list of vectors
-        :param labels:
-        :return:topple of a matrix for all the tweets and their label
+        :param labels: the labels of the tweeters
+        :return:topple of a matrix for all the tweets and a label 1 if politician, else -1
         """
         matrix = np.array([self.get_tweet_vec(tweet, self.first_dic) for tweet in instances])
-        binary_lables = np.array([1 if label <= POLITICIAN else 0 for label in
+        binary_lables = np.array([1 if label <= POLITICIAN else -1 for label in
                                  labels])
         return matrix, binary_lables
 
