@@ -59,9 +59,13 @@ class Classifier(object):
         # remove the words that appears the less
         my_dict = {k:v for k,v in my_dict.items() if v > LOW_APPEARANCE}
 
+        #get a list of all the Prepostion in the english language
         get_Prepostion_List = [line.rstrip('\n') for line in open('PrepostionList')]
 
-
+        #deletes from the dictionary all prepostion
+        for k, v in my_dict.iteritems():
+            if get_Prepostion_List.__contains__(k):
+                del my_dict[k]
 
         index = 0
         for k in my_dict:
