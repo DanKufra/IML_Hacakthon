@@ -14,6 +14,7 @@ from load_tweets import load_dataset
 import operator
 from sklearn import svm
 import numpy as np
+from collections import Counter
 
 
 LOW_APPEARANCE = 3
@@ -46,15 +47,13 @@ class Classifier(object):
         :return: dictionary, vector - A dictionary of words that appear in a
         tweet and how many times it appear in all the tweets
         """
-        my_dict = {}
+        all_tweets = ""
         # count all the words in all the tweets
         for tweet in tweets:
-            tweet = tweet.lower().split()
-            for word in tweet:
-                if word in my_dict:
-                    my_dict[word] += 1
-                else:
-                    my_dict[word] = 1
+            tweet = tweet.lower()
+            all_tweets += " " + tweet
+        counter = Counter(all_tweets.split()).most_common()
+        my_dict = dict(counter)
 
         # remove the words that appears the less
         my_dict = {k:v for k,v in my_dict.items() if v > LOW_APPEARANCE}
