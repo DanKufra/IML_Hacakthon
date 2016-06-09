@@ -9,6 +9,7 @@ Auther(s): Tomer Patel, Dan Kufra, Gilad Wolf
 
 ===================================================
 """
+import pandas
 from load_tweets import load_dataset
 import operator
 from sklearn import svm
@@ -71,8 +72,12 @@ class Classifier(object):
         return tweet_vec
 
     def create_tweet_matrix(self, instances, labels):
-        pass
-
+        """
+        create matrix of tweets and a vector of their labels
+        :param instances: al the tweets in a list of strings
+        :param labels:
+        :return:topple of a matrix for all the tweets and their label
+        """
 
     def train_politics(self,instances, labels):
         pass
@@ -85,5 +90,6 @@ class Classifier(object):
 
 SVC = svm.SVC()
 X,y = load_dataset()
-names = np.loadtxt("names.txt", delimiter=',')
+names = pandas.read_csv("names.txt", header=None)
+namesIndex, names = names[0], names[1]
 print(X[0], names[y[0]])
