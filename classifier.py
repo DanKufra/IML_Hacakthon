@@ -62,7 +62,7 @@ class Classifier(object):
         #get a list of all the Prepostion in the english language
         get_Prepostion_List = [line.rstrip('\n') for line in open('PrepostionList')]
 
-        #deletes from the dictionary all prepostion
+        #deletes from the dictionary all prepostions
         for k, v in my_dict.iteritems():
             if get_Prepostion_List.__contains__(k):
                 del my_dict[k]
