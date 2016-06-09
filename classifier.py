@@ -51,10 +51,10 @@ class Classifier(object):
         # remove the words that appears the less
         my_dict = {k:v for k,v in my_dict.items() if v > LOW_APPEARANCE}
 
-        count = 0
+        index = 0
         for k in my_dict:
-            my_dict[k] = (my_dict[k], count)
-            count += 1
+            my_dict[k] = (my_dict[k], index)
+            index += 1
         return my_dict
 
     def get_tweet_vec(self, tweet, word_dic):
