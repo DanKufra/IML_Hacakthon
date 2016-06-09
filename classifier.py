@@ -84,9 +84,9 @@ class Classifier(object):
         :return:topple of a matrix for all the tweets and a label 1 if politician, else -1
         """
         matrix = np.array([self.get_tweet_vec(tweet, self.first_dic) for tweet in instances])
-        binary_lables = np.array([1 if label <= POLITICIAN else -1 for label in
+        binary_labels = np.array([1 if label <= POLITICIAN else -1 for label in
                                  labels])
-        return matrix, binary_lables
+        return matrix, binary_labels
 
     def train_politics(self,instances, labels):
         X,y = self.create_tweet_matrix(instances,labels)
