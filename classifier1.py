@@ -12,8 +12,11 @@ Auther(s): Tomer Patel, Dan Kufra, Gilad Wolf
 """
 import pandas
 from load_tweets import load_dataset
+import operator
 from sklearn import *
 import numpy as np
+from collections import Counter
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from check import *
 from sklearn.multiclass import OneVsRestClassifier
