@@ -32,6 +32,7 @@ class Classifier(object):
         pass
 
     def classify(self,X):
+
         """
         Recieves a list of m unclassified tweets, and predicts for each one which celebrity posted it.
         :param X: A list of length m containing the tweet's texts (strings)
