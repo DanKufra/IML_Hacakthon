@@ -1,6 +1,7 @@
 __author__ = 'gilax'
 
 MAX = 0
+PERCENT = 15
 
 from load_tweets import *
 from collections import Counter
@@ -52,7 +53,7 @@ def get_common_words(X, y, labels, promise):
                 to_write.append(percent)
             else:
                 to_write.append(0)
-        if any(to_write[i] >= promise and dictionary_per_person[i][word] > MAX
+        if all(to_write[j] < promise for j in range(len(dictionary_per_person))) and any(dictionary_per_person[i][word] > MAX
                for i in range(len(dictionary_per_person))):
             check.write(word + to_write.__str__() + "\n")
             all_counter.append((word, to_write))
@@ -64,4 +65,4 @@ tweets, names = load_dataset()
 
 politician_labels = [i for i in range(10)]
 
-print(len(get_common_words(tweets, names, politician_labels, 20)))
+print(len(get_common_words(tweets, names, politician_labels, PERCENT)))
