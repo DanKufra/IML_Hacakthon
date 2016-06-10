@@ -25,28 +25,34 @@ class Classifier(object):
         x = tf.placeholder(tf.float64, shape=X_train.A.shape)
         y_ = tf.placeholder(tf.float64, shape=y.shape)
 
-        # w = tf.Variable(tf.random_normal([1], stddev=0.35))
+        w = tf.Variable(tf.random_normal([1], stddev=0.35))
 
-        # p = w * X_train.A.transpose()
-        # r = p - y
-        # s = tf.square(r)
+        p = w * X_train.A.transpose()
+        r = p - y
+        s = tf.square(r)
 
-        cross_entropy = -tf.nn.relu(y_*tf.log(y))
-        train = tf.train.FtrlOptimizer(0.01).minimize(cross_entropy)
+        loss = tf.reduce_max(s)
+
+        cross_entropy = -tf.reduce_sum(y_*tf.log(y))
+        train = tf.train.AdagradOptimizer(0.01).minimize(loss)
         sess = tf.InteractiveSession()
         sess.run(tf.initialize_all_variables())
 
         for step in range(300):
-            # sess.run(w)
-            train.run(feed_dict={x: X_train, y_: y})
-            # if step % 10:
-                # print(step, sess.run(w))
+            sess.run(w)
+            train.run(feed_dict={x: X_train.A, y_: y})
+            if step % 10:
+                print(step, sess.run(w))
 
         correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float64))
         X_val = vectorizer.fit_transform(validate_instances)
         y_val = np.array([i for i in validate_labels])
-        print(accuracy.eval(feed_dict={x: X_val, y_: y_val}))
+
+        x = tf.placeholder(tf.float64, shape=X_val.A.shape)
+        y_ = tf.placeholder(tf.float64, shape=y_val.shape)
+
+        print(accuracy.eval(feed_dict={x: X_val.A, y_: y_val}))
 
         # SVC = svm.LinearSVC()
         # vectorizer = TfidfVectorizer(min_df=2, ngram_range=(1,4))
@@ -71,11 +77,11 @@ X,y = load_dataset()
 names = pandas.read_csv("names.txt", header=None)
 namesIndex, names = names[0], names[1]
 
-training_data = X[0:(int) (0.4*len(X))]
-val_data = X[(int) (0.4*len(X)):(int) (1.0*len(X)):]
+training_data = X[0:(int) (0.5*len(X))]
+val_data = X[(int) (0.5*len(X)):(int) (1.0*len(X)):]
 
-training_label = y[0:(int) (0.4*len(X))]
-val_label = y[(int) (0.4*len(X)):(int) (1.0*len(X)):]
+training_label = y[0:(int) (0.5*len(X))]
+val_label = y[(int) (0.5*len(X)):(int) (1.0*len(X)):]
 
 classifier = Classifier()
 classifier.train(training_data, training_label, val_data, val_label)

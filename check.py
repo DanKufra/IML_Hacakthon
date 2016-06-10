@@ -1,6 +1,7 @@
 __author__ = 'gilax'
 
-MAX = 4
+MAX = 0
+PERCENT = 15
 
 from load_tweets import *
 from collections import Counter
@@ -12,20 +13,16 @@ def get_common_words(X, y, labels, promise):
     returns the common words and the percentage of them in each group
     :param X: tweets
     :param y: names indexes
-    :param labels: list of two groups of names indexes
+    :param labels: list of names indexes
     :param promise: percent that promising the separate
-    :return: a list of [word, [percent in first group, percent in second group]]
+    :return: a list of [word, [percent, ..., percent]]
     """
     all_tweets_list = ["" for _ in range(len(labels))]
     all_tweets = ""
     # count all the words in all the tweets
     for i in range(len(X)):
         tweet = X[i].lower()
-        if y[i] in labels[0]:
-            index = 0
-        else:
-            index = 1
-        all_tweets_list[index] += " " + tweet
+        all_tweets_list[y[i]] += " " + tweet
         all_tweets += " " + tweet
 
 
@@ -42,7 +39,7 @@ def get_common_words(X, y, labels, promise):
     dictionary_per_person = [{k: v for k, v in list_per_group[i]}
                                             for i in range(len(list_per_group))]
 
-    # check = open('check.txt', 'w')
+    check = open('check.txt', 'w')
 
     # count all the words in all the tweets
     counter = Counter(all_tweets.split()).most_common()
@@ -56,9 +53,9 @@ def get_common_words(X, y, labels, promise):
                 to_write.append(percent)
             else:
                 to_write.append(0)
-        if any(to_write[i] >= promise and dictionary_per_person[i][word] > MAX
+        if all(to_write[j] < promise for j in range(len(dictionary_per_person))) and any(dictionary_per_person[i][word] > MAX
                for i in range(len(dictionary_per_person))):
-            # check.write(word + to_write.__str__() + "\n")
+            check.write(word + to_write.__str__() + "\n")
             all_counter.append((word, to_write))
 
     return all_counter
@@ -66,5 +63,6 @@ def get_common_words(X, y, labels, promise):
 
 tweets, names = load_dataset()
 
-politician_labels = [[i for i in range(4)], [i + 4 for i in range(6)]]
+politician_labels = [i for i in range(10)]
 
+print(len(get_common_words(tweets, names, politician_labels, PERCENT)))
