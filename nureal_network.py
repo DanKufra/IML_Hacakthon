@@ -18,44 +18,51 @@ class Classifier(object):
         # TODO implement
 
     def train(self,training_instances, training_labels, validate_instances, validate_labels):
-        vectorizer = TfidfVectorizer(min_df=100)
+        vectorizer = TfidfVectorizer(min_df=7)
         X_train = vectorizer.fit_transform(training_instances)
-        y = np.array([i for i in training_labels])
+        y = np.array([i for i in training_labels], dtype=float)
 
-        w = tf.Variable(tf.random_normal([len(X_train.A)], stddev=0.35))
+        x = tf.placeholder(tf.float64, shape=X_train.A.shape)
+        y_ = tf.placeholder(tf.float64, shape=y.shape)
 
-        p = X_train.A * w
-        r = p - y
-        s = tf.square(r)
+        # w = tf.Variable(tf.random_normal([1], stddev=0.35))
 
-        loss = tf.reduce_mean(s)
-        train = tf.train.GradientDescentOptimizer(0.5).minimize(loss)
+        # p = w * X_train.A.transpose()
+        # r = p - y
+        # s = tf.square(r)
 
-        sess = tf.Session()
+        cross_entropy = -tf.nn.relu(y_*tf.log(y))
+        train = tf.train.FtrlOptimizer(0.01).minimize(cross_entropy)
+        sess = tf.InteractiveSession()
         sess.run(tf.initialize_all_variables())
 
         for step in range(300):
-            sess.run(train)
-            print(step, sess.run(w))
-            if step % 20:
-                pass
+            # sess.run(w)
+            train.run(feed_dict={x: X_train, y_: y})
+            # if step % 10:
+                # print(step, sess.run(w))
 
+        correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float64))
+        X_val = vectorizer.fit_transform(validate_instances)
+        y_val = np.array([i for i in validate_labels])
+        print(accuracy.eval(feed_dict={x: X_val, y_: y_val}))
 
-                # SVC = svm.LinearSVC()
-                # vectorizer = TfidfVectorizer(min_df=2, ngram_range=(1,4))
-                # X_train = vectorizer.fit_transform(training_instances)
-                #
-                # X_train2 = vectorizer.transform(validate_instances)
-                #
-                # binary_labels = np.array([1 if label <= POLITICIAN else -1 for label in
-                #                          training_labels])
-                #
-                # binary_labels2 = np.array([1 if label <= POLITICIAN else -1 for label in
-                #                          validate_labels])
-                # SVC.fit(X_train, binary_labels)
-                # res = SVC.score(X_train2, binary_labels2)
-                # print(res)
-                # return res
+        # SVC = svm.LinearSVC()
+        # vectorizer = TfidfVectorizer(min_df=2, ngram_range=(1,4))
+        # X_train = vectorizer.fit_transform(training_instances)
+        #
+        # X_train2 = vectorizer.transform(validate_instances)
+        #
+        # binary_labels = np.array([1 if label <= POLITICIAN else -1 for label in
+        #                          training_labels])
+        #
+        # binary_labels2 = np.array([1 if label <= POLITICIAN else -1 for label in
+        #                          validate_labels])
+        # SVC.fit(X_train, binary_labels)
+        # res = SVC.score(X_train2, binary_labels2)
+        # print(res)
+        # return res
 
 
 
